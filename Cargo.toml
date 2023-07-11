@@ -1,0 +1,16 @@
+[package]
+name = "fuse-rs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+remain = "0.2" 
+thiserror = "1.0"  
+libc = "0.2"  
+bitflags = "2.2"  
+enumn = "0.1"  
+zerocopy = "*" 
+log = "0.4"
+crossbeam-utils = "0.8" 
