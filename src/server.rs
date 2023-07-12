@@ -226,7 +226,6 @@ impl<F: FileSystem + Sync> Server<F> {
             Some(Opcode::Rename2) => self.rename2(in_header, r, w),
             Some(Opcode::Lseek) => self.lseek(in_header, r, w),
             Some(Opcode::CopyFileRange) => self.copy_file_range(in_header, r, w),
-            Some(Opcode::ChromeOsTmpfile) => self.chromeos_tmpfile(in_header, r, w),
             Some(Opcode::SetUpMapping) => self.set_up_mapping(in_header, r, w, mapper),
             Some(Opcode::RemoveMapping) => self.remove_mapping(in_header, r, w, mapper),
             None => reply_error(
@@ -439,30 +438,6 @@ impl<F: FileSystem + Sync> Server<F> {
             Context::from(in_header),
             in_header.nodeid.into(),
             name,
-            mode,
-            umask,
-        ) {
-            Ok(entry) => {
-                let out = EntryOut::from(entry);
-
-                reply_ok(Some(out), None, in_header.unique, w)
-            }
-            Err(e) => reply_error(e, in_header.unique, w),
-        }
-    }
-
-    fn chromeos_tmpfile<R: Reader, W: Writer>(
-        &self,
-        in_header: InHeader,
-        mut r: R,
-        w: W,
-    ) -> Result<usize> {
-        let ChromeOsTmpfileIn { mode, umask } =
-            zerocopy_from_reader(&mut r).map_err(Error::DecodeMessage)?;
-
-        match self.fs.chromeos_tmpfile(
-            Context::from(in_header),
-            in_header.nodeid.into(),
             mode,
             umask,
         ) {
