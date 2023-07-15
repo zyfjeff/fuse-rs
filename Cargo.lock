@@ -45,12 +45,14 @@ name = "fuse-rs"
 version = "0.1.0"
 dependencies = [
  "bitflags",
+ "cfg-if",
  "crossbeam-utils",
  "enumn",
  "libc",
  "log",
  "remain",
  "thiserror",
+ "tracing",
  "zerocopy",
 ]
 
@@ -135,6 +137,13 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.25",
+]
+
+[[package]]
+name = "tracing"
+version = "0.1.0"
+dependencies = [
+ "cfg-if",
 ]
 
 [[package]]

@@ -32,6 +32,7 @@ use crate::Error;
 use crate::Result;
 use libc::sysconf;
 use libc::_SC_PAGESIZE;
+use tracing::trace_simple_print;
 
 pub fn zerocopy_from_reader<R: io::Read, T: FromBytes>(mut read: R) -> io::Result<T> {
     // Allocate on the stack via `MaybeUninit` to ensure proper alignment.
@@ -169,7 +170,7 @@ impl<F: FileSystem + Sync> Server<F> {
         mapper: M,
     ) -> Result<usize> {
         let in_header: InHeader = zerocopy_from_reader(&mut r).map_err(Error::DecodeMessage)?;
-        //cros_tracing::trace_simple_print!("fuse server: handle_message: in_header={:?}", in_header);
+        trace_simple_print!("fuse server: handle_message: in_header={:?}", in_header);
 
         if in_header.len
             > size_of::<InHeader>() as u32 + size_of::<WriteIn>() as u32 + self.fs.max_buffer_size()
@@ -913,7 +914,7 @@ impl<F: FileSystem + Sync> Server<F> {
     }
 
     fn init<R: Reader, W: Writer>(&self, in_header: InHeader, mut r: R, w: W) -> Result<usize> {
-        //cros_tracing::trace_simple_print!("fuse server: init: in_header={:?}", in_header);
+        trace_simple_print!("fuse server: init: in_header={:?}", in_header);
         let InitIn {
             major,
             minor,
@@ -1126,7 +1127,7 @@ impl<F: FileSystem + Sync> Server<F> {
         mut r: R,
         mut w: W,
     ) -> Result<usize> {
-        //cros_tracing::trace_simple_print!("fuse server: readdirplus: in_header={:?}", in_header);
+        trace_simple_print!("fuse server: readdirplus: in_header={:?}", in_header);
         let ReadIn {
             fh, offset, size, ..
         } = zerocopy_from_reader(&mut r).map_err(Error::DecodeMessage)?;

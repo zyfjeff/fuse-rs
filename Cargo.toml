@@ -14,3 +14,11 @@ enumn = "0.1"
 zerocopy = "*" 
 log = "0.4"
 crossbeam-utils = "0.8" 
+cfg-if = "1.0.0"
+tracing = { path = "tracing" }
+
+[workspace]
+
+members = [
+    "tracing"
+]
