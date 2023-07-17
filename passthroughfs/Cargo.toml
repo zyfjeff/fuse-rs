@@ -1,0 +1,12 @@
+[package]
+name = "passthroughfs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+fuse-rs = { path = ".." }
+libc = "0.2"
+base = { path = "../base" }
+tracing = { path = "../tracing" }
